@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Глава 1 — Черновое название главы</title>
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="reader-body">
+  <main class="reader">
+    <header class="reader-top">
+      <a class="top-link" href="arc1.html">← Арка I</a>
+      <div class="hint">D / → вперёд · A / ← назад · колесо · клик по краям</div>
+    </header>
+
+    <section class="reader-title">
+      <p class="eyebrow centered">Глава 1</p>
+      <h1>Черновое название главы</h1>
+    </section>
+
+    <section class="book-area" aria-live="polite">
+      <article class="spread active">
+        <div class="sheet text-page">
+          <p>Здесь будет начало твоей главы. Пока это черновой текст, чтобы проверить, как будущий ридер держит атмосферу истории и не мешает чтению.</p>
+          <p>Деревня стояла на холме, вдали от больших дорог. Утром над крышами поднимался тонкий дым, а у леса медленно шевелился туман.</p>
+          <div class="divider">✦ ✦ ✦</div>
+          <p>Позже сюда можно вставлять настоящие абзацы, сцены, описания, диалоги и иллюстрации между ними.</p>
+        </div>
+
+        <div class="sheet image-page">
+          <img src="images/village.png" alt="Деревня на холме">
+        </div>
+      </article>
+
+      <article class="spread">
+        <div class="sheet text-page">
+          <p>Это уже второй разворот. Слева можно продолжить сцену, дать внутренний монолог героя или описание деревни.</p>
+          <p>Такой формат хорошо подходит для ПК: читатель видит сразу две страницы, как будто перед ним раскрытая книга.</p>
+        </div>
+
+        <div class="sheet text-page">
+          <p>На телефоне эти страницы автоматически становятся одной вертикальной лентой: сначала текст, потом картинка, потом следующий блок.</p>
+          <p class="note">То есть ридер выглядит книжно на большом экране, но остаётся удобным на мобильном.</p>
+        </div>
+      </article>
+
+      <article class="spread">
+        <div class="sheet text-page">
+          <p>Это третий разворот. Сюда можно вставить следующую сцену: тревожные слухи о лесe, пропавший скот или разговоры жителей.</p>
+        </div>
+
+        <div class="sheet text-page">
+          <p>Прогресс чтения сохраняется автоматически. Если закрыть страницу и нажать “Продолжить чтение” в главном меню, ридер вернётся к последнему развороту.</p>
+        </div>
+      </article>
+    </section>
+
+    <nav class="reader-controls" aria-label="Навигация по главе">
+      <button type="button" onclick="prevSpread()">← Назад</button>
+      <div class="counter" id="counter">1 / 3</div>
+      <button type="button" onclick="nextSpread()">Вперёд →</button>
+    </nav>
+  </main>
+
+  <script>
+    const spreads = document.querySelectorAll('.spread');
+    const counter = document.getElementById('counter');
+    let current = Math.min(Number(localStorage.getItem('chapter1Spread') || 0), spreads.length - 1);
+    let locked = false;
+    let wheelDelta = 0;
+
+    spreads.forEach((spread, index) => {
+      spread.classList.toggle('active', index === current);
+    });
+    updateCounter();
+
+    function updateCounter() {
+      counter.textContent = `${current + 1} / ${spreads.length}`;
+      localStorage.setItem('chapter1Spread', String(current));
+    }
+
+    function showSpread(newIndex, direction) {
+      if (locked || newIndex < 0 || newIndex >= spreads.length || newIndex === current) return;
+
+      locked = true;
+      const oldSpread = spreads[current];
+      const newSpread = spreads[newIndex];
+
+      oldSpread.classList.remove('active');
+      oldSpread.classList.add(direction === 'next' ? 'leaving-left' : 'leaving-right');
+
+      newSpread.classList.remove('leaving-left', 'leaving-right');
+      newSpread.classList.add('active');
+
+      current = newIndex;
+      updateCounter();
+
+      setTimeout(() => {
+        oldSpread.classList.remove('leaving-left', 'leaving-right');
+        locked = false;
+      }, 360);
+    }
+
+    function nextSpread() {
+      showSpread(current + 1, 'next');
+    }
+
+    function prevSpread() {
+      showSpread(current - 1, 'prev');
+    }
+
+    document.addEventListener('keydown', (event) => {
+      if (event.code === 'KeyD' || event.key === 'ArrowRight') nextSpread();
+      if (event.code === 'KeyA' || event.key === 'ArrowLeft') prevSpread();
+    });
+
+    document.querySelector('.book-area').addEventListener('click', (event) => {
+      if (window.innerWidth <= 850) return;
+      const middle = window.innerWidth / 2;
+      event.clientX > middle ? nextSpread() : prevSpread();
+    });
+
+    document.addEventListener('wheel', (event) => {
+      if (window.innerWidth <= 850) return;
+
+      wheelDelta += event.deltaY;
+
+      if (Math.abs(wheelDelta) < 90) return;
+
+      if (wheelDelta > 0) {
+        nextSpread();
+      } else {
+        prevSpread();
+      }
+
+      wheelDelta = 0;
+    }, { passive: true });
+  </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Своё фентези</title>
+  <script src="theme.js"></script>
+  <script src="image-viewer.js" defer></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="app-shell">
+  <main class="home page-wide">
+    <section class="launcher">
+      <div class="cover-wrap">
+        <img class="cover" src="images/cover.png" alt="Обложка книги" data-lightbox-image>
+      </div>
+
+      <div class="launcher-content">
+        <div class="brand-lockup">
+          <img class="brand-logo" src="images/logo-cropped.png" alt="Логотип Своё фентези">
+          <div>
+            <p class="eyebrow">Dark fantasy light novel</p>
+            <h1>Своё фентези</h1>
+          </div>
+        </div>
+        <p class="subtitle">Тёмная сказка о деревне на краю леса, забытых именах и цене силы, которую нельзя вернуть.</p>
+
+        <nav class="menu-actions" aria-label="Главное меню">
+          <a class="action primary" href="chapter1.html" id="continueLink">
+            <span>📖 Продолжить чтение</span>
+            <small id="continueMeta">Глава 1 · разворот 1</small>
+          </a>
+          <a class="action" href="arc1.html">
+            <span>🗂️ Арки и главы</span>
+            <small>Каталог истории</small>
+          </a>
+          <a class="action" href="codex.html">
+            <span>📜 Кодекс мира</span>
+            <small>Персонажи, места, фракции</small>
+          </a>
+          <a class="action" href="gallery.html">
+            <span>🖼️ Иллюстрации</span>
+            <small>Обложка и арты</small>
+          </a>
+          <a class="action" href="map.html">
+            <span>🗺️ Интерактивная карта</span>
+            <small>Карта мира</small>
+          </a>
+        </nav>
+
+        <p class="quiet-note">Локальный ридер. Позже эту же структуру можно перенести на хостинг и открыть из Telegram как мини-приложение.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const savedSpread = Number(localStorage.getItem('chapter1Spread') || 0);
+    const continueMeta = document.getElementById('continueMeta');
+    continueMeta.textContent = `Глава 1 · разворот ${savedSpread + 1}`;
+  </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-label="Черновая карта фэнтези мира">
+  <defs>
+    <radialGradient id="paper" cx="50%" cy="45%" r="75%">
+      <stop offset="0" stop-color="#ead9b6"/>
+      <stop offset="0.62" stop-color="#d4b784"/>
+      <stop offset="1" stop-color="#9e7447"/>
+    </radialGradient>
+    <filter id="rough">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="4" seed="8"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 0.16"/>
+      </feComponentTransfer>
+      <feBlend mode="multiply" in2="SourceGraphic"/>
+    </filter>
+    <style>
+      .land{fill:#b9925d;stroke:#5f3b22;stroke-width:5}
+      .isle{fill:#c6a16d;stroke:#5f3b22;stroke-width:4}
+      .mount{fill:#5a3b28;stroke:#2d1b12;stroke-width:3}
+      .forest{fill:#42613d;stroke:#26381f;stroke-width:2}
+      .river{fill:none;stroke:#527c91;stroke-width:8;stroke-linecap:round}
+      .road{fill:none;stroke:#7f5632;stroke-width:5;stroke-dasharray:14 14;stroke-linecap:round}
+      .label{font:700 34px Georgia,serif;fill:#372217}
+      .small{font:700 24px Georgia,serif;fill:#4b3020}
+      .mark{fill:#7d2f1d;stroke:#f0d5a0;stroke-width:4}
+    </style>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#paper)"/>
+  <rect x="35" y="35" width="1530" height="930" rx="36" fill="none" stroke="#6a4326" stroke-width="8"/>
+  <path class="land" d="M318 185C436 92 596 116 691 238c68 88 39 188 121 250 92 70 223 3 325 84 89 72 95 212 22 292-83 91-246 91-369 43-95-37-151-109-257-103-98 6-165 77-254 36-86-40-89-157-48-234 47-88 145-93 152-173 7-76-84-105-65-248Z"/>
+  <path class="isle" d="M1138 183c82-35 178 15 206 91 31 85-26 187-115 206-87 18-181-47-190-135-7-66 35-136 99-162Z"/>
+  <path class="isle" d="M227 704c62-22 132 16 152 75 22 64-23 137-91 147-70 11-137-45-138-113-1-47 30-92 77-109Z"/>
+  <path class="river" d="M576 165c-14 109 33 165 13 245-25 98-128 128-146 218-12 58 20 111 61 159"/>
+  <path class="river" d="M1037 607c-73 37-126 96-142 166-9 40-2 79 13 113"/>
+  <path class="road" d="M338 735c118-113 246-176 384-189 146-14 289 28 430 116"/>
+  <path class="road" d="M666 260c115 95 252 120 405 77"/>
+  <polygon class="mount" points="422,305 462,221 504,305"/>
+  <polygon class="mount" points="487,336 533,239 580,336"/>
+  <polygon class="mount" points="562,310 605,219 650,310"/>
+  <polygon class="mount" points="947,258 1001,149 1056,258"/>
+  <polygon class="mount" points="1024,286 1072,184 1121,286"/>
+  <circle class="forest" cx="352" cy="500" r="22"/>
+  <circle class="forest" cx="392" cy="526" r="24"/>
+  <circle class="forest" cx="438" cy="493" r="20"/>
+  <circle class="forest" cx="803" cy="731" r="26"/>
+  <circle class="forest" cx="850" cy="706" r="21"/>
+  <circle class="forest" cx="889" cy="750" r="24"/>
+  <circle class="mark" cx="501" cy="632" r="18"/>
+  <circle class="mark" cx="831" cy="520" r="18"/>
+  <circle class="mark" cx="1162" cy="341" r="18"/>
+  <text class="label" x="398" y="386">Северные хребты</text>
+  <text class="label" x="292" y="672">Деревня на холме</text>
+  <text class="label" x="767" y="487">Старый тракт</text>
+  <text class="label" x="1077" y="526">Острова тумана</text>
+  <text class="small" x="676" y="884">Черновая карта мира · позже заменить на твою</text>
+  <g filter="url(#rough)">
+    <rect width="1600" height="1000" fill="transparent"/>
+  </g>
+</svg>
