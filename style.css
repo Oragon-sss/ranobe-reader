@@ -767,6 +767,7 @@ h1,
   display: grid;
   place-items: center;
   padding: 42px;
+  overflow: hidden;
   background: rgba(5, 4, 3, 0.86);
   opacity: 0;
   backdrop-filter: blur(14px);
@@ -1270,11 +1271,13 @@ button:hover {
   }
 
   .map-stage {
-    min-height: 540px;
+    min-height: min(66vh, 540px);
   }
 
   .world-map {
-    width: 960px;
+    width: min(100%, 1200px);
+    max-height: calc(100% - 24px);
+    object-fit: contain;
   }
 
   .reader-top {
@@ -1305,10 +1308,6 @@ button:hover {
     transform: none;
     pointer-events: auto;
     margin-bottom: 24px;
-  }
-
-  .spread:not(.active) {
-    display: none;
   }
 
   .sheet {
@@ -1342,6 +1341,26 @@ button:hover {
     border: 1px solid rgba(91, 75, 57, 0.6);
     border-radius: 16px;
     background: rgba(20, 18, 15, 0.9);
+  }
+
+  .image-viewer {
+    padding: max(18px, env(safe-area-inset-top)) 14px max(18px, env(safe-area-inset-bottom));
+    align-items: center;
+    justify-items: center;
+  }
+
+  .image-viewer-img {
+    max-width: calc(100vw - 28px);
+    max-height: calc(100dvh - 116px);
+    border-radius: 14px;
+  }
+
+  .image-viewer-close {
+    top: max(14px, env(safe-area-inset-top));
+    right: 14px;
+    width: 52px;
+    min-width: 52px;
+    height: 52px;
   }
 
   button {

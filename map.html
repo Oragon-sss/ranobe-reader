@@ -32,6 +32,8 @@
     const zoomOut = document.getElementById('zoomOut');
     const resetMap = document.getElementById('resetMap');
 
+    const compactQuery = window.matchMedia('(max-width: 900px)');
+
     let scale = 1;
     let x = 0;
     let y = 0;
@@ -54,6 +56,11 @@
       y = 0;
       applyTransform();
     }
+
+    compactQuery.addEventListener('change', resetView);
+    window.addEventListener('orientationchange', () => {
+      window.setTimeout(resetView, 250);
+    });
 
     stage.addEventListener('wheel', (event) => {
       event.preventDefault();

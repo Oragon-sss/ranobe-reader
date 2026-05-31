@@ -57,15 +57,18 @@
     </section>
 
     <nav class="reader-controls" aria-label="Навигация по главе">
-      <button type="button" onclick="prevSpread()">← Назад</button>
+      <button type="button" id="prevReaderButton" onclick="prevSpread()">← Назад</button>
       <div class="counter" id="counter">1 / 3</div>
-      <button type="button" onclick="nextSpread()">Вперёд →</button>
+      <button type="button" id="nextReaderButton" onclick="nextSpread()">Вперёд →</button>
     </nav>
   </main>
 
   <script>
     const spreads = document.querySelectorAll('.spread');
     const counter = document.getElementById('counter');
+    const prevReaderButton = document.getElementById('prevReaderButton');
+    const nextReaderButton = document.getElementById('nextReaderButton');
+    const mobileReader = window.matchMedia('(max-width: 900px)');
     let current = Math.min(Number(localStorage.getItem('chapter1Spread') || 0), spreads.length - 1);
     let locked = false;
     let wheelDelta = 0;
@@ -78,6 +81,40 @@
     function updateCounter() {
       counter.textContent = `${current + 1} / ${spreads.length}`;
       localStorage.setItem('chapter1Spread', String(current));
+    }
+
+    function updateMobileProgress() {
+      if (!mobileReader.matches) return;
+
+      const scrollable = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const progress = Math.min(1, Math.max(0, window.scrollY / scrollable));
+      const page = Math.min(spreads.length, Math.max(1, Math.ceil(progress * spreads.length)));
+      current = page - 1;
+      counter.textContent = `Стр. ${page} / ${spreads.length}`;
+      localStorage.setItem('chapter1Spread', String(current));
+    }
+
+    function syncReaderMode() {
+      if (mobileReader.matches) {
+        spreads.forEach((spread) => {
+          spread.classList.add('active');
+          spread.classList.remove('leaving-left', 'leaving-right');
+        });
+        prevReaderButton.textContent = '← Арки';
+        nextReaderButton.textContent = 'Следующая →';
+        nextReaderButton.disabled = false;
+        updateMobileProgress();
+        return;
+      }
+
+      spreads.forEach((spread, index) => {
+        spread.classList.toggle('active', index === current);
+        spread.classList.remove('leaving-left', 'leaving-right');
+      });
+      prevReaderButton.textContent = '← Назад';
+      nextReaderButton.textContent = 'Вперёд →';
+      nextReaderButton.disabled = false;
+      updateCounter();
     }
 
     function showSpread(newIndex, direction) {
@@ -103,14 +140,17 @@
     }
 
     function nextSpread() {
+      if (mobileReader.matches) return;
       showSpread(current + 1, 'next');
     }
 
     function prevSpread() {
+      if (mobileReader.matches) return;
       showSpread(current - 1, 'prev');
     }
 
     document.addEventListener('keydown', (event) => {
+      if (mobileReader.matches) return;
       if (event.code === 'KeyD' || event.key === 'ArrowRight') nextSpread();
       if (event.code === 'KeyA' || event.key === 'ArrowLeft') prevSpread();
     });
@@ -122,7 +162,7 @@
     });
 
     document.addEventListener('wheel', (event) => {
-      if (window.innerWidth <= 850) return;
+      if (mobileReader.matches) return;
 
       wheelDelta += event.deltaY;
 
@@ -136,6 +176,24 @@
 
       wheelDelta = 0;
     }, { passive: true });
+
+    prevReaderButton.addEventListener('click', (event) => {
+      if (!mobileReader.matches) return;
+      event.preventDefault();
+      window.location.href = 'arc1.html';
+    });
+
+    nextReaderButton.addEventListener('click', (event) => {
+      if (!mobileReader.matches) return;
+      event.preventDefault();
+      nextReaderButton.disabled = true;
+      nextReaderButton.textContent = 'Скоро';
+    });
+
+    window.addEventListener('scroll', updateMobileProgress, { passive: true });
+    window.addEventListener('resize', updateMobileProgress);
+    mobileReader.addEventListener('change', syncReaderMode);
+    syncReaderMode();
   </script>
 </body>
 </html>
